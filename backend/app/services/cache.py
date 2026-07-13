@@ -6,11 +6,11 @@ import os
 # Initialize Redis client (typically configured centrally).
 redis_client = redis.Redis.from_url(os.getenv("REDIS_URL", "redis://localhost:6379/0"))
 
-async def get_revenue_summary(property_id: str, tenant_id: str) -> Dict[str, Any]:
+async def get_revenue_summary(property_id: str, tenant_id: str, year: int, month: int) -> Dict[str, Any]:
     """
     Fetches revenue summary, utilizing caching to improve performance.
     """
-    cache_key = f"revenue:{tenant_id}:{property_id}"
+    cache_key = f"revenue:{tenant_id}:{property_id}:{year}:{month}"
     
     # Try to get from cache
     cached = await redis_client.get(cache_key)
