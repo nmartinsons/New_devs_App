@@ -10,12 +10,14 @@ router = APIRouter()
 @router.get("/dashboard/summary")
 async def get_dashboard_summary(
     property_id: str,
+    year: int,
+    month: int,
     current_user: dict = Depends(get_current_user)
 ) -> Dict[str, Any]:
     
     tenant_id = getattr(current_user, "tenant_id", "default_tenant") or "default_tenant"
     
-    revenue_data = await get_revenue_summary(property_id, tenant_id)
+    revenue_data = await get_revenue_summary(property_id, tenant_id, year, month)
     
     total_revenue = Decimal(revenue_data["total"]).quantize(
     Decimal("0.01"),
